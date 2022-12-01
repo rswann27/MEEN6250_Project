@@ -2,11 +2,27 @@ from bs4 import BeautifulSoup
 import requests
 import json
 
-url = "https://www.worldometers.info/coronavirus/#countries"
+url = "https://www.worldometers.info/coronavirus/#nav-yesterday2"
 result = requests.get(url).text
 doc = BeautifulSoup(result, 'html.parser')
-body = doc.tbody
-countries = body.find_all('a',attrs={'class':"mt_a"})
+tbody = doc.find('table', attrs={'id':"main_table_countries_yesterday2"}).tbody
+countries = tbody.find_all('a',attrs={'class':"mt_a"})
+
+def webscraper(cntry):
+    for c in countries:
+        if c.text == cntry:
+            tds = c.parent.parent.find_all('td')
+            deaths =tds[4].text
+            deathsPerMil = tds[11].text
+            newdeaths = int(tds[5].text)
+            population = int(tds[14].text.replace(",",""))
+            newDeathsPerMil = round(newdeaths/(population/100000),3)
+            print(deaths)
+            print(deathsPerMil)
+            print((newdeaths))
+            print(newDeathsPerMil)
+            
+webscraper('Brazil')
 
 data = {}
 for i in range(len(countries)):
