@@ -93,18 +93,6 @@ def scrape_country(cntry,url):
 scrape_country('Brazil',url)
 """
 
-
-
-
-
-
-#Print its total deaths
-tr=countries[0].parent.parent
-tds=tr.find_all('td')
-Deaths = tds[4].text
-Deaths = Deaths.strip()
-Deaths = float(Deaths.replace(',', ''))
-
 # open json file
 with open("USAdata.json", 'r') as openfile:
     json_object = json.load(openfile)
