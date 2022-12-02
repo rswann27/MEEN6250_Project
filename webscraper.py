@@ -60,10 +60,10 @@ def scrape_country(cntry,url):
         # RETURN data associated with given country
         if cntry == countries[i].text:
             print(cntry,":" )
-            print("   Daily Death Rate = ", data[cntry]['New Deaths'])
-            print("   Daily Death Rate Per Million = ", data[cntry]['New Deaths/Million'])
-            print("   Cumulative Death Rate = ", data[cntry]['Deaths'])
-            print("   Cumulative Death Rate Per Million = ", data[cntry]['Deaths/Million'])
+            print("   Daily Death Rate = ", data.get(cntry,{}).get('New Deaths'))
+            print("   Daily Death Rate Per Million = ", data.get(cntry,{}).get('New Deaths/Million'))
+            print("   Cumulative Death Rate = ", data.get(cntry,{}).get('Deaths'))
+            print("   Cumulative Death Rate Per Million = ", data.get(cntry,{}).get('Deaths/Million'))
             # We found the given country
             bool = 0
 
