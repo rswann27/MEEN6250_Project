@@ -3,6 +3,8 @@ import requests
 import json
 from datetime import date
 
+desiredCountry = 'Brazil'
+
 def scrape_country(cntry,url ="https://www.worldometers.info/coronavirus/#nav-yesterday2"):
     bool = 1
 
@@ -58,11 +60,11 @@ def scrape_country(cntry,url ="https://www.worldometers.info/coronavirus/#nav-ye
 
         # RETURN data associated with given country
         if cntry == countries[i].text:
-            print(cntry,":" )
+            print("\n\n\n",cntry,":" )
             print("   Daily Death Rate = ", data.get(cntry,{}).get('New Deaths'))
             print("   Daily Death Rate Per Million = ", data.get(cntry,{}).get('New Deaths/Million'))
             print("   Cumulative Death Rate = ", data.get(cntry,{}).get('Deaths'))
-            print("   Cumulative Death Rate Per Million = ", data.get(cntry,{}).get('Deaths/Million'))
+            print("   Cumulative Death Rate Per Million = ", data.get(cntry,{}).get('Deaths/Million'),"\n\n\n")
             # We found the given country
             bool = 0
 
@@ -75,22 +77,8 @@ def scrape_country(cntry,url ="https://www.worldometers.info/coronavirus/#nav-ye
     # SAVE Dictionary in JSON file
     with open(saveStr, "w") as outfile:
         json.dump(data, outfile)
-"""
-    # Return specific country
-    for c in countries:
-        if c.text == cntry:
-            tds = c.parent.parent.find_all('td')
-            deaths =tds[4].text
-            deathsPerMil = tds[11].text
-            newdeaths = int(tds[5].text)
-            population = int(tds[14].text.replace(",",""))
-            newDeathsPerMil = round(newdeaths/(population/100000),3)
-            print(deaths)
-            print(deathsPerMil)
-            print((newdeaths))
-            print(newDeathsPerMil)
-"""            
-scrape_country('Brazil')
+           
+scrape_country(desiredCountry)
 """
 
 # open json file
