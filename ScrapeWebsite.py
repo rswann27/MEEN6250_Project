@@ -3,9 +3,7 @@ import requests
 import json
 from datetime import date
 
-url = "https://www.worldometers.info/coronavirus/#nav-yesterday2"
-
-def scrape_country(cntry,url):
+def scrape_country(cntry,url ="https://www.worldometers.info/coronavirus/#nav-yesterday2"):
     bool = 1
 
     # SCRAPE web for data:
@@ -92,7 +90,7 @@ def scrape_country(cntry,url):
             print((newdeaths))
             print(newDeathsPerMil)
 """            
-scrape_country('Brazil',url)
+scrape_country('Brazil')
 """
 
 # open json file
