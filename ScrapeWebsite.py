@@ -96,6 +96,7 @@ newDeaths = tds[5].text
 totalRecovered = tds[6].text
 newRecovered = tds[7].text
 activeCases = tds[8].text
+seriousCritical = tds[9].text
 casesPerMil = tds[10].text
 deathsPerMil = tds[11].text
 totalTests = tds[12].text
