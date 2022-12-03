@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
+from datetime import date
 
 url = "https://www.worldometers.info/coronavirus/#nav-yesterday2"
 
@@ -72,8 +73,9 @@ def scrape_country(cntry,url):
         # No
         print('Country Not in Data Set')
 
+    saveStr = "COVID_" + str(date.today()) + ".json"
     # SAVE Dictionary in JSON file
-    with open("COVID.json", "w") as outfile:
+    with open(saveStr, "w") as outfile:
         json.dump(data, outfile)
 """
     # Return specific country
