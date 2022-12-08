@@ -100,7 +100,7 @@ def scrape_country(cntry,url ="https://www.worldometers.info/coronavirus/#nav-ye
             data.setdefault(countries[i].text, {})['Deaths'] = Deaths
 
             # DEATHS Per MILLION
-            deathPerMil = tds[4].text
+            deathPerMil = tds[11].text
             deathPerMil = deathPerMil.strip()
             if deathPerMil == "":
                 deathPerMil = 0
