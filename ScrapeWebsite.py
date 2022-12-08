@@ -139,6 +139,7 @@ def scrape_country(cntry,url ="https://www.worldometers.info/coronavirus/#nav-ye
 
     saveStr = "COVID_" + str(date.today()) + ".json"
     # SAVE Dictionary in JSON file
+    print('Saving Data')
     with open(saveStr, "w") as outfile:
         json.dump(data, outfile)
            
