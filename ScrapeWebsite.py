@@ -100,12 +100,7 @@ def scrape_country(cntry,url ="https://www.worldometers.info/coronavirus/#nav-ye
             data.setdefault(countries[i].text, {})['Deaths'] = Deaths
 
             # DEATHS Per MILLION
-            deathPerMil = tds[11].text
-            deathPerMil = deathPerMil.strip()
-            if deathPerMil == "":
-                deathPerMil = 0
-            else:
-                deathPerMil = int(deathPerMil.replace(',', ''))
+            deathPerMil = int(Deaths/population*1000000)
             data.setdefault(countries[i].text, {})['Deaths/Million'] = deathPerMil
 
             # NEW DEATHS
@@ -118,15 +113,15 @@ def scrape_country(cntry,url ="https://www.worldometers.info/coronavirus/#nav-ye
             data.setdefault(countries[i].text, {})['New Deaths'] = newDeaths
 
             # NEW DEATH per MILLION
-            data.setdefault(countries[i].text, {})['New Deaths/Million'] = round(newDeaths/(population/100000),3)
+            data.setdefault(countries[i].text, {})['New Deaths/Million'] = round(newDeaths/population*100000,2)
 
 
             # RETURN data associated with given country
             if cntry == countries[i].text:
                 print("\n\n\n",cntry,":" )
-                print("   Daily Death Rate = ", data.get(cntry,{}).get('New Deaths'))
+                print("   Daily Deaths = ", data.get(cntry,{}).get('New Deaths'))
                 print("   Daily Death Rate Per Million = ", data.get(cntry,{}).get('New Deaths/Million'))
-                print("   Cumulative Death Rate = ", data.get(cntry,{}).get('Deaths'))
+                print("   Cumulative Deaths = ", data.get(cntry,{}).get('Deaths'))
                 print("   Cumulative Death Rate Per Million = ", data.get(cntry,{}).get('Deaths/Million'),"\n\n\n")
                 # We found the given country
                 bool = 0
