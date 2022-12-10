@@ -10,13 +10,13 @@ The function parses through all the counties' data and creates a multi-dimension
 
    Brazil :
    
-    Daily Death Rate =  145
+    Daily Deaths =  104
     
-    Daily Death Rate Per Million =  0.067
+    Daily Death Rate Per Million =  0.48
     
-    Cumulative Death Rate =  689998
+    Cumulative Deaths =  690739
     
-    Cumulative Death Rate Per Million =  689998
+    Cumulative Death Rate Per Million =  3207
     
 If the country is not found in the data set, the funciton will return "Country not found". Whether or not the given country is found, the function will save all the countries' data to the json file.
 
