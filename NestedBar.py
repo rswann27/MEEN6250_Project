@@ -25,7 +25,7 @@ print(data)
 
 source = ColumnDataSource(data=data)
 
-p = figure(x_range=Countries,  y_range=(0, 700000), title="COVID Death by Country",
+p = figure(x_range=Countries,  y_range=(0, 1000000), title="COVID Death by Country",
            height=350, toolbar_location=None, tools="")
 
 p.vbar(x=dodge('Countries', -0.25, range=p.x_range), top='New Deaths', source=source,
