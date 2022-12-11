@@ -1,8 +1,7 @@
+# Standard importa & bokeh for visualization
 from math import pi
-
 import pandas as pd
 import random
-from Country_Groups import countryGroups
 from bokeh.palettes import Turbo256
 from bokeh.transform import cumsum
 from bokeh.models import ColumnDataSource
@@ -11,6 +10,10 @@ from bokeh.transform import dodge
 from bokeh.layouts import row
 import json
 
+# Import dictionary of country groups
+from Country_Groups import countryGroups
+
+# Randomize color palette so similar colors won't be assigned near each other
 my_pallete = list(Turbo256)
 random.shuffle(my_pallete)
 
@@ -18,7 +21,7 @@ random.shuffle(my_pallete)
 with open("COVID_2022-12-07.json", 'r') as openfile:
     COVID = json.load(openfile)
 
-# Country Groups for visualization from scraped keys and Country_Groups.py
+# Country Groups for visualization from scraped keys and Country_Groups.py dictionary
 worldwide = list(COVID.keys())
 africa = countryGroups.get("Africa")
 asia = countryGroups.get("Asia")
@@ -36,6 +39,7 @@ g20 = countryGroups.get("G20")
 Countries = g20
 deathData = ['New Deaths', 'Total Deaths']
 
+# Initialize
 newDeaths = []
 totalDeaths = []
 
@@ -47,16 +51,17 @@ data = {'Countries'         : Countries,
         'New Deaths'        : newDeaths,
         'Total Deaths'      : totalDeaths}
 
-
 sum_new_deaths = sum(newDeaths)
 sum_total_deaths = sum(totalDeaths)
 angle = []
 angle2 = []
 
+# Creates percentages for visualization in pie chart
 for rr in range(len(Countries)):
     angle.append(newDeaths[rr]/sum_new_deaths)
     angle2.append(totalDeaths[rr]/sum_total_deaths)
-    
+
+# Creates new dictionary with country and new deaths
 new_key = {}
 for key in Countries:
     for value1 in newDeaths:
@@ -64,12 +69,14 @@ for key in Countries:
         newDeaths.remove(value1)
         break
 
+# Rename variables and append dictionary to include total deaths, pie chart angles, and color assignment to each country
 data = pd.Series(new_key).reset_index(name='value').rename(columns={'index': 'country'})
 data['value2'] = totalDeaths
 data['angle'] = data['value']/data['value'].sum() * 2*pi
 data['angle2'] = data['value2']/data['value2'].sum() * 2*pi
 data['color'] = my_pallete[0:len(new_key)]
 
+# New Deaths Chart
 p = figure(height=350, title="New Deaths", toolbar_location=None,
            tools="hover", tooltips="@country: @value", x_range=(-0.5, 1.0))
 
@@ -81,6 +88,7 @@ p.axis.axis_label = None
 p.axis.visible = False
 p.grid.grid_line_color = None
 
+# Total Deaths Chart
 q = figure(height=350, title="Total Deaths", toolbar_location=None,
            tools="hover", tooltips="@country: @value2", x_range=(-0.5, 1.0))
 
@@ -92,4 +100,5 @@ q.axis.axis_label = None
 q.axis.visible = False
 q.grid.grid_line_color = None
 
+# Display Together
 show(row(p,q))
