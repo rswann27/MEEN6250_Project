@@ -65,18 +65,6 @@ for rr in range(len(WorldWide)):
     Country.append(WorldWide[rr])
     Deaths.append(COVID5.get(WorldWide[rr],{}).get('Deaths/Million'))
 
-# Initialize New Data Set
-africaDeaths = []
-asiaDeaths = []
-oceaniaDeaths = []
-europeDeaths = []
-saDeaths = []
-euDeaths = []
-natoDeaths = []
-opecDeaths = []
-g10Deaths = []
-g20Deaths = []
-
 data = {'Countries' : Country,
         'Day'       : Day,
         'Deaths'    : Deaths}
