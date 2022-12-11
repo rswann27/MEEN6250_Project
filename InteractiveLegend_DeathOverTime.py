@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 from bokeh.palettes import Turbo256
-from bokeh.models import ColumnDataSource
+from bokeh.models import Legend
 from bokeh.plotting import figure, show
 
 import json
@@ -55,14 +55,15 @@ data = {'Countries' : Country,
 
 df = pd.DataFrame(data)
 p = figure(width = 1200, height = 700)
+p.add_layout(Legend(), 'right')
 p.title.text = 'Deaths/Million in Countries over Days in December\nSelect Countries in Legend to hide'
 for name, color in zip(Country, my_pallete):
     country_df = df[df['Countries'] == name]
     p.line(x = country_df['Day'], y = country_df['Deaths'], color = color, legend_label=name)
 
-p.legend.location = "top_left"
+#p.legend.location = "top_left"
 p.legend.click_policy="hide"
 p.xaxis.axis_label = 'Dates in December'
-p.yaxis.axis_label = 'Deaths [people]'
+p.yaxis.axis_label = 'Deaths [1/1 Mil people]'
 
 show(p)
