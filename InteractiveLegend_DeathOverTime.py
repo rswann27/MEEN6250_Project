@@ -80,6 +80,9 @@ g20Deaths = []
 data = {'Countries' : Country,
         'Day'       : Day,
         'Deaths'    : Deaths}
+groupDeaths = []
+countryGroup = []
+groupDay = []
 
 df = pd.DataFrame(data)
 Days = [7, 8, 10, 11]
@@ -87,48 +90,70 @@ Days = [7, 8, 10, 11]
 for rr in range(len(Days)):
     day = df.query("Day == 7")
     #   Africa
+    countryGroup.append('Africa')
+    groupDay.append(Days[rr])
     idx_Africa = day.query("Countries == @africa")
-    africaDeaths.append(idx_Africa['Deaths'].sum())
+    groupDeaths.append(idx_Africa['Deaths'].sum())
     #   Asia
+    countryGroup.append('Asia')
+    groupDay.append(Days[rr])
     idx_Asia = day.query("Countries == @asia")
-    asiaDeaths.append(idx_Asia['Deaths'].sum())
+    groupDeaths.append(idx_Asia['Deaths'].sum())
     #   Oceania
+    countryGroup.append('Oceania')
+    groupDay.append(Days[rr])
     idx_Oceania = day.query("Countries == @oceania")
-    oceaniaDeaths.append(idx_Oceania['Deaths'].sum())
+    groupDeaths.append(idx_Oceania['Deaths'].sum())
     #   Europe
+    countryGroup.append('Europe')
+    groupDay.append(Days[rr])
     idx_Europe = day.query("Countries == @europe")
-    europeDeaths.append(idx_Europe['Deaths'].sum())
+    groupDeaths.append(idx_Europe['Deaths'].sum())
     #   South America
+    countryGroup.append('South America')
+    groupDay.append(Days[rr])
     idx_SA = day.query("Countries == @south_america")
-    saDeaths.append(idx_SA['Deaths'].sum())
-    #   Eurpopean Union
+    groupDeaths.append(idx_SA['Deaths'].sum())
+    #   European Union
+    countryGroup.append('European Union')
+    groupDay.append(Days[rr])
     idx_EU = day.query("Countries == @european_union")
-    euDeaths.append(idx_EU['Deaths'].sum())
+    groupDeaths.append(idx_EU['Deaths'].sum())
     #   Nato
+    countryGroup.append('Nato')
+    groupDay.append(Days[rr])
     idx_Nato = day.query("Countries == @nato")
-    natoDeaths.append(idx_Nato['Deaths'].sum())
+    groupDeaths.append(idx_Nato['Deaths'].sum())
     #   OPEC
+    countryGroup.append('OPEC')
+    groupDay.append(Days[rr])
     idx_opec = day.query("Countries == @opec")
-    opecDeaths.append(idx_opec['Deaths'].sum())
+    groupDeaths.append(idx_opec['Deaths'].sum())
     #   g10
+    countryGroup.append('G10')
+    groupDay.append(Days[rr])
     idx_g10 = day.query("Countries == @g10")
-    g10Deaths.append(idx_g10['Deaths'].sum())
+    groupDeaths.append(idx_g10['Deaths'].sum())
     #   g20
+    countryGroup.append('G20')
+    groupDay.append(Days[rr])
     idx_g20 = day.query("Countries == @g20")
-    g20Deaths.append(idx_g20['Deaths'].sum())
-print(g20Deaths)
-'''
+    groupDeaths.append(idx_g20['Deaths'].sum())
+groupData = {   'Country Groups'  : countryGroup,
+                'Day'               : groupDay,
+                'Deaths'            : groupDeaths}
+df = df = pd.DataFrame(groupData)
+
 p = figure(width = 1200, height = 700)
 p.add_layout(Legend(), 'right')
-p.title.text = 'Deaths/Million in Countries over Days in December\nSelect Countries in Legend to hide'
-for name, color in zip(Country, my_pallete):
-    country_df = df[df['Countries'] == name]
+p.title.text = 'Deaths/Million in Country Groups over Days in December\nSelect Country Group in Legend to hide'
+for name, color in zip(countryGroup, my_pallete):
+    country_df = df[df['Country Groups'] == name]
     p.line(x = country_df['Day'], y = country_df['Deaths'], color = color, legend_label=name)
 
 #p.legend.location = "top_left"
 p.legend.click_policy="hide"
 p.xaxis.axis_label = 'Dates in December'
-p.yaxis.axis_label = 'Deaths [1/1 Mil people]'
+p.yaxis.axis_label = 'Deaths Per Million'
 
 show(p)
-'''
