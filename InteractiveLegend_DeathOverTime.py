@@ -1,43 +1,68 @@
 import pandas as pd
-
+import random
+from bokeh.palettes import Turbo256
 from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, show
 
 import json
-Countries = ["China", "Brazil", "Thailand", "Germany", "Turkey"]
+
+# Randomize color palette so similar colors won't be assigned near each other
+my_pallete = list(Turbo256)
+random.shuffle(my_pallete)
 
 # open json file
 with open("COVID_2022-12-07.json", 'r') as openfile:
-    COVID07 = json.load(openfile)
+    COVID2 = json.load(openfile)
+with open("COVID_2022-12-08.json", 'r') as openfile:
+    COVID3 = json.load(openfile)
+with open("COVID_2022-12-10.json", 'r') as openfile:
+    COVID4 = json.load(openfile)
+with open("COVID_2022-12-11.json", 'r') as openfile:
+    COVID5 = json.load(openfile)
+Countries = list(COVID2.keys())
 
-# open json file
-with open("COVID_2022-12-02.json", 'r') as openfile:
-    COVID02 = json.load(openfile)
+Day = []
+Country = []
+Deaths = []
 
-# open json file
-with open("COVID_2022-12-03.json", 'r') as openfile:
-    COVID03 = json.load(openfile)
+# December 7
+for rr in range(len(Countries)):
+    Day.append(7)
+    Country.append(Countries[rr])
+    Deaths.append(COVID2.get(Countries[rr],{}).get('Deaths/Million'))
 
-source = ColumnDataSource(data = dict(
-    x = [2, 3, 7],
-    China = [COVID02.get('China',{}).get('Deaths'), COVID03.get('China',{}).get('Deaths'),COVID07.get('China',{}).get('Deaths')],
-    Brazil = [COVID02.get('Brazil',{}).get('Deaths'), COVID03.get('Brazil',{}).get('Deaths'),COVID07.get('Brazil',{}).get('Deaths')],
-    Thailand = [COVID02.get('Thailand',{}).get('Deaths'), COVID03.get('Thailand',{}).get('Deaths'),COVID07.get('Thailand',{}).get('Deaths')],
-    Germany = [COVID02.get('Germany',{}).get('Deaths'), COVID03.get('Germany',{}).get('Deaths'),COVID07.get('Germany',{}).get('Deaths')],
-    Turkey = [COVID02.get('Turkey',{}).get('Deaths'), COVID03.get('Turkey',{}).get('Turkey'),COVID07.get('Turkey',{}).get('Deaths')]
-))
+# December 8
+for rr in range(len(Countries)):
+    Day.append(8)
+    Country.append(Countries[rr])
+    Deaths.append(COVID3.get(Countries[rr],{}).get('Deaths/Million'))
 
-list_of_colors = ['Red', 'Orange','Green', 'Blue', 'Purple', ]
+# December 10
+for rr in range(len(Countries)):
+    Day.append(10)
+    Country.append(Countries[rr])
+    Deaths.append(COVID4.get(Countries[rr],{}).get('Deaths/Million'))
 
-p = figure(width=400, height=400)
+# December 11
+for rr in range(len(Countries)):
+    Day.append(11)
+    Country.append(Countries[rr])
+    Deaths.append(COVID5.get(Countries[rr],{}).get('Deaths/Million'))
 
-p.vline_stack(Countries, x='x', source=source, color=list_of_colors, legend_label = Countries)
+data = {'Countries' : Country,
+        'Day'       : Day,
+        'Deaths'    : Deaths}
+
+df = pd.DataFrame(data)
+p = figure(width = 1200, height = 700)
+p.title.text = 'Deaths/Million in Countries over Days in December\nSelect Countries in Legend to hide'
+for name, color in zip(Country, my_pallete):
+    country_df = df[df['Countries'] == name]
+    p.line(x = country_df['Day'], y = country_df['Deaths'], color = color, legend_label=name)
+
 p.legend.location = "top_left"
 p.legend.click_policy="hide"
-p.title.text = 'Deaths in Countries over Days\nSelect Countries in Legend to hide'
-
 p.xaxis.axis_label = 'Dates in December'
-
 p.yaxis.axis_label = 'Deaths [people]'
 
 show(p)
