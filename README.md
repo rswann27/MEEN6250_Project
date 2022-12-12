@@ -21,8 +21,11 @@ See documentation for Bokeh installation:
 
 'ScrapeWebsite.py' contains the function 'scrape_country' which takes two inputs: the desired country and a default argument of a COVID data website url set to Wolrd-o-Meter. The script is currently set up to scrape the following websites:
 
+
 https://www.worldometers.info/coronavirus/#nav-yesterday2
+
 https://www.nytimes.com/interactive/2021/world/covid-cases.html
+
 
 The function parses through all the counties' data and creates a multi-dimensional dictionary sorted by country and stores the following if parsing through World-o-Meter: Population, Total Deaths, Deaths Per Million, New Daily Deaths, and New Daily Deaths Per Million and if parsing through NYTimes: New Daily Deaths, and New Daily Deaths Per Million. The dictionary is then saved in a .json file to the current folder location under 'COVID_*CurrentDate*.json'. If the desired country is found in the data set, the function will return that country's saved data to the termial, for example:
 
@@ -42,6 +45,7 @@ To change the desired country (it's currently set to 'Brazil'), change the varia
 To toggle the desired url from World-o-Meter to NYTime, uncomment line 135 and comment out line 136.
 
 'Country_Groups.py' contains a dictionary of country groups to use in data visualization. Current groups include geographic regions, economic and political unions, and others. The dictionary can be readily modified by adding a "key" as the name of the desired region and a [list] containing the names of the countries in the group. Country names added to lists must match those scraped by 'ScrapeWebsite.py' to be use in data sets. For example, 'Democratic Republic of the Congo' is saved as 'DRC' and 'United Kingdom' is saved as 'UK'. Groups can be used to compare COVID data among group members or can be aggregated to compare between groups.
+
 
 To launch the Data Visualization GUI run the script, 'InteractiveGUI.py'. This script visualizes data obtained from the .json files which was scraped by 'ScrapeWebsite.py'. For data distinction, the palette Turbo256 is imported to provide enough colors to potentially represent every country in a worldwide analysis. For further distinction, the palette is randomized to guarantee that neighboring countries will have distinct colors.
 
