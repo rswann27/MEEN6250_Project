@@ -42,6 +42,7 @@ Below is an example of the wedge charts:
 <img width="1176" alt="Screenshot 2022-12-11 at 8 26 37 PM" src="https://user-images.githubusercontent.com/107783708/206954816-42cb9c95-c920-47de-8a7d-41030b45e26e.png">
 
 The second set of figures, are time series plots showing data for continent regions through out days in December. Tabs at the top of the figure allow the user to select between different data types: Total Deaths, Deaths/Mil, New Deaths, and New Deaths/Mil. An interactive hover tool is provided to inform the user of exact values on the plot. An interactive legend allows the user to remove data from the plot by selecting the desired data set in the legend.
+![image](https://user-images.githubusercontent.com/118580455/206959167-aca26adf-f81c-4dc7-a915-037c7bd73552.png)
 
 The third and final set of figures, are time series plots showing New Deaths per Million for countries in given continent regions through out days in December. Tabs at the top of the figure allow the user to select between different continents: Africa, Asia, Oceania, Europe, South America, and North American. An interactive hover tool is provided to inform the user of exact values on the plot. An interactive legend allows the user to remove data from the plot by selecting the desired data set in the legend.
 
