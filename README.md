@@ -45,6 +45,7 @@ The second set of figures, are time series plots showing data for continent regi
 ![image](https://user-images.githubusercontent.com/118580455/206959167-aca26adf-f81c-4dc7-a915-037c7bd73552.png)
 
 The third and final set of figures, are time series plots showing New Deaths per Million for countries in given continent regions through out days in December. Tabs at the top of the figure allow the user to select between different continents: Africa, Asia, Oceania, Europe, South America, and North American. An interactive hover tool is provided to inform the user of exact values on the plot. An interactive legend allows the user to remove data from the plot by selecting the desired data set in the legend.
+![image](https://user-images.githubusercontent.com/118580455/206959295-635c5ce6-5f40-4b77-b6a2-262e0fbeb667.png)
 
 
 
