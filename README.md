@@ -22,6 +22,9 @@ If the country is not found in the data set, the funciton will return "Country n
 
 To change the desired country (it's currently set to 'Brazil') change the variable 'desiredCountry' on line 6 to the desired country.
 To toggle the desired url from World-o-Meter to NYTime, uncomment line 135 and comment out line 136.
+
+'Country_Groups.py' contains a dictionary of country groups to use in data visualization. Current groups include geographic regions, economic and political unions, and others. The dictionary can be readily modified by adding a "key" as the name of the desired region and a [list] containing the names of the countries in the group. Country names added to lists must match those scraped by 'ScrapeWebsite.py' to use in data sets. For example, 'Democratic Republic of the Congo' is saved as 'DRC' and 'United Kingdom' is saved as 'UK'.
+
  
 See documentation for Beautiful Soup installation: 
 https://www.crummy.com/software/BeautifulSoup/bs4/doc/
