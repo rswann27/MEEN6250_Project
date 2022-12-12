@@ -5,7 +5,7 @@ from bokeh.palettes import Turbo256
 from bokeh.models import Legend
 from bokeh.plotting import figure, show
 from bokeh.models import TabPanel, Tabs
-from bokeh.layouts import column
+from bokeh.layouts import column, row
 
 import json
 
@@ -161,7 +161,7 @@ TOOLTIPS1 = [
     ]
 p1 = figure(width = 1200, height = 700, tooltips = TOOLTIPS1)
 p1.add_layout(Legend(), 'right')
-p1.title.text = 'Death in Country Groups over Days in December\nSelect Country Group in Legend to hide'
+p1.title.text = 'Death in Continents over Days in December\nSelect Country Group in Legend to hide'
 for name, color in zip(countryGroup, my_pallete):
     country_df = dfGroup[dfGroup['Country Groups'] == name]
     p1.line(x = country_df['Day'], y = country_df['Deaths'], color = color, legend_label=name)
@@ -177,7 +177,7 @@ TOOLTIPS2 = [
     ]
 p2 = figure(width = 1200, height = 700, tooltips = TOOLTIPS2)
 p2.add_layout(Legend(), 'right')
-p2.title.text = 'Death/Million in Country Groups over Days in December\nSelect Country Group in Legend to hide'
+p2.title.text = 'Death/Million in Continents over Days in December\nSelect Country Group in Legend to hide'
 for name, color in zip(countryGroup, my_pallete):
     country_df = dfGroup[dfGroup['Country Groups'] == name]
     p2.line(x = country_df['Day'], y = country_df['DeathsPerMil'], color = color, legend_label=name)
@@ -193,7 +193,7 @@ TOOLTIPS3 = [
     ]
 p3 = figure(width = 1200, height = 700, tooltips = TOOLTIPS3)
 p3.add_layout(Legend(), 'right')
-p3.title.text = 'New Deaths in Country Groups over Days in December\nSelect Country Group in Legend to hide'
+p3.title.text = 'New Deaths in Continents over Days in December\nSelect Country Group in Legend to hide'
 for name, color in zip(countryGroup, my_pallete):
     country_df = dfGroup[dfGroup['Country Groups'] == name]
     p3.line(x = country_df['Day'], y = country_df['NewDeaths'], color = color, legend_label=name)
@@ -209,7 +209,7 @@ TOOLTIPS4 = [
     ]
 p4 = figure(width = 1200, height = 700, tooltips = TOOLTIPS4)
 p4.add_layout(Legend(), 'right')
-p4.title.text = 'New Death/Million in Country Groups over Days in December\nSelect Country Group in Legend to hide'
+p4.title.text = 'New Death/Million in Continents over Days in December\nSelect Country Group in Legend to hide'
 for name, color in zip(countryGroup, my_pallete):
     country_df = dfGroup[dfGroup['Country Groups'] == name]
     p4.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
