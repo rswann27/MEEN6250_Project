@@ -5,6 +5,7 @@ from bokeh.palettes import Turbo256
 from bokeh.models import Legend
 from bokeh.plotting import figure, show
 from bokeh.models import TabPanel, Tabs
+from bokeh.layouts import column
 
 import json
 
@@ -17,11 +18,7 @@ asia = countryGroups.get("Asia")
 oceania = countryGroups.get("Oceania")
 europe = countryGroups.get("Europe")
 south_america = countryGroups.get("South America")
-european_union = countryGroups.get("EU")
-nato = countryGroups.get("NATO")
-opec = countryGroups.get("OPEC")
-g10 = countryGroups.get("G10")
-g20 = countryGroups.get("G20")
+north_america = countryGroups.get("North America")
 
 # Randomize color palette so similar colors won't be assigned near each other
 my_pallete = list(Turbo256)
@@ -96,6 +93,7 @@ countryGroup = []
 groupDay = []
 
 df = pd.DataFrame(data)
+
 Days = [7, 8, 10, 11]
 
 for rr in range(len(Days)):
@@ -141,53 +139,21 @@ for rr in range(len(Days)):
     groupDeaths.append(idx_SA['Deaths'].sum())
     groupNewDeaths.append(idx_SA['NewDeaths'].sum())
     groupNewDeathsPerMil.append(idx_SA['NewDeathsPerMil'].sum())
-    #   European Union
-    countryGroup.append('EU')
+    #   North America
+    countryGroup.append('North America')
     groupDay.append(Days[rr])
-    idx_EU = day.query("Countries == @european_union")
-    groupDeathsPerMil.append(idx_EU['DeathsPerMil'].sum())
-    groupDeaths.append(idx_EU['Deaths'].sum())
-    groupNewDeaths.append(idx_EU['NewDeaths'].sum())
-    groupNewDeathsPerMil.append(idx_EU['NewDeathsPerMil'].sum())
-    #   Nato
-    countryGroup.append('NATO')
-    groupDay.append(Days[rr])
-    idx_Nato = day.query("Countries == @nato")
-    groupDeathsPerMil.append(idx_Nato['DeathsPerMil'].sum())
-    groupDeaths.append(idx_Nato['Deaths'].sum())
-    groupNewDeaths.append(idx_Nato['NewDeaths'].sum())
-    groupNewDeathsPerMil.append(idx_Nato['NewDeathsPerMil'].sum())
-    #   OPEC
-    countryGroup.append('OPEC')
-    groupDay.append(Days[rr])
-    idx_opec = day.query("Countries == @opec")
-    groupDeathsPerMil.append(idx_opec['DeathsPerMil'].sum())
-    groupDeaths.append(idx_opec['Deaths'].sum())
-    groupNewDeaths.append(idx_opec['NewDeaths'].sum())
-    groupNewDeathsPerMil.append(idx_opec['NewDeathsPerMil'].sum())
-    #   g10
-    countryGroup.append('G10')
-    groupDay.append(Days[rr])
-    idx_g10 = day.query("Countries == @g10")
-    groupDeathsPerMil.append(idx_g10['DeathsPerMil'].sum())
-    groupDeaths.append(idx_g10['Deaths'].sum())
-    groupNewDeaths.append(idx_g10['NewDeaths'].sum())
-    groupNewDeathsPerMil.append(idx_g10['NewDeathsPerMil'].sum())
-    #   g20
-    countryGroup.append('G20')
-    groupDay.append(Days[rr])
-    idx_g20 = day.query("Countries == @g20")
-    groupDeathsPerMil.append(idx_g20['DeathsPerMil'].sum())
-    groupDeaths.append(idx_g20['Deaths'].sum())
-    groupNewDeaths.append(idx_g20['NewDeaths'].sum())
-    groupNewDeathsPerMil.append(idx_g20['NewDeathsPerMil'].sum())
+    idx_SA = day.query("Countries == @north_america")
+    groupDeathsPerMil.append(idx_SA['DeathsPerMil'].sum())
+    groupDeaths.append(idx_SA['Deaths'].sum())
+    groupNewDeaths.append(idx_SA['NewDeaths'].sum())
+    groupNewDeathsPerMil.append(idx_SA['NewDeathsPerMil'].sum())
 groupData = {   'Country Groups'    : countryGroup,
                 'Day'               : groupDay,
                 'Deaths'            : groupDeaths,
                 'DeathsPerMil'      : groupDeathsPerMil,
                 'NewDeaths'         : groupNewDeaths, 
                 'NewDeathsPerMil'   : groupNewDeathsPerMil}
-df = df = pd.DataFrame(groupData)
+dfGroup = pd.DataFrame(groupData)
 
 ## TOTAL DEATHS
 TOOLTIPS1 = [
@@ -197,7 +163,7 @@ p1 = figure(width = 1200, height = 700, tooltips = TOOLTIPS1)
 p1.add_layout(Legend(), 'right')
 p1.title.text = 'Death in Country Groups over Days in December\nSelect Country Group in Legend to hide'
 for name, color in zip(countryGroup, my_pallete):
-    country_df = df[df['Country Groups'] == name]
+    country_df = dfGroup[dfGroup['Country Groups'] == name]
     p1.line(x = country_df['Day'], y = country_df['Deaths'], color = color, legend_label=name)
 
 p1.legend.click_policy="hide"
@@ -213,7 +179,7 @@ p2 = figure(width = 1200, height = 700, tooltips = TOOLTIPS2)
 p2.add_layout(Legend(), 'right')
 p2.title.text = 'Death/Million in Country Groups over Days in December\nSelect Country Group in Legend to hide'
 for name, color in zip(countryGroup, my_pallete):
-    country_df = df[df['Country Groups'] == name]
+    country_df = dfGroup[dfGroup['Country Groups'] == name]
     p2.line(x = country_df['Day'], y = country_df['DeathsPerMil'], color = color, legend_label=name)
 
 p2.legend.click_policy="hide"
@@ -229,7 +195,7 @@ p3 = figure(width = 1200, height = 700, tooltips = TOOLTIPS3)
 p3.add_layout(Legend(), 'right')
 p3.title.text = 'New Deaths in Country Groups over Days in December\nSelect Country Group in Legend to hide'
 for name, color in zip(countryGroup, my_pallete):
-    country_df = df[df['Country Groups'] == name]
+    country_df = dfGroup[dfGroup['Country Groups'] == name]
     p3.line(x = country_df['Day'], y = country_df['NewDeaths'], color = color, legend_label=name)
 
 p3.legend.click_policy="hide"
@@ -245,7 +211,7 @@ p4 = figure(width = 1200, height = 700, tooltips = TOOLTIPS4)
 p4.add_layout(Legend(), 'right')
 p4.title.text = 'New Death/Million in Country Groups over Days in December\nSelect Country Group in Legend to hide'
 for name, color in zip(countryGroup, my_pallete):
-    country_df = df[df['Country Groups'] == name]
+    country_df = dfGroup[dfGroup['Country Groups'] == name]
     p4.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
 
 p4.legend.click_policy="hide"
@@ -254,4 +220,111 @@ p4.yaxis.axis_label = 'New Deaths Per Million'
 tab4 = TabPanel(child = p4, title = 'New Deaths/Mil')
 
 tabs = Tabs(tabs = [ tab1, tab2, tab3, tab4 ])
-show(tabs)
+
+## Tab by Continent
+subAfrica = df.query("Countries == @africa")
+subAsia = df.query("Countries == @asia")
+subOceania = df.query("Countries == @oceania")
+subEurope = df.query("Countries == @europe")
+subSA = df.query("Countries == @south_america")
+subNA = df.query("Countries == @north_america")
+
+## AFRICA
+TOOLTIPSa = [
+    ("New Death/Mil", "$y")
+    ]
+pa = figure(width = 1200, height = 700, tooltips = TOOLTIPSa)
+pa.add_layout(Legend(), 'right')
+pa.title.text = 'New Death/Million over Days in December\nSelect Country in Legend to hide'
+for name, color in zip(africa, my_pallete):
+    country_df = subAfrica[subAfrica['Countries'] == name]
+    pa.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
+
+pa.legend.click_policy="hide"
+pa.xaxis.axis_label = 'Dates in December'
+pa.yaxis.axis_label = 'New Deaths Per Million'
+taba = TabPanel(child = pa, title = 'Africa')
+
+## ASIA
+TOOLTIPSb = [
+    ("New Death/Mil", "$y")
+    ]
+pb = figure(width = 1200, height = 700, tooltips = TOOLTIPSb)
+pb.add_layout(Legend(), 'right')
+pb.title.text = 'New Death/Million over Days in December\nSelect Country in Legend to hide'
+for name, color in zip(asia, my_pallete):
+    country_df = subAsia[subAsia['Countries'] == name]
+    pb.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
+
+pb.legend.click_policy="hide"
+pb.xaxis.axis_label = 'Dates in December'
+pb.yaxis.axis_label = 'New Deaths Per Million'
+tabb = TabPanel(child = pb, title = 'Asia')
+
+## OCEANIA
+TOOLTIPSc = [
+    ("New Death/Mil", "$y")
+    ]
+pc = figure(width = 1200, height = 700, tooltips = TOOLTIPSc)
+pc.add_layout(Legend(), 'right')
+pc.title.text = 'New Death/Million over Days in December\nSelect Country in Legend to hide'
+for name, color in zip(oceania, my_pallete):
+    country_df = subOceania[subOceania['Countries'] == name]
+    pc.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
+
+pc.legend.click_policy="hide"
+pc.xaxis.axis_label = 'Dates in December'
+pc.yaxis.axis_label = 'New Deaths Per Million'
+tabc = TabPanel(child = pc, title = 'Oceania')
+
+## EUROPE
+TOOLTIPSd = [
+    ("New Death/Mil", "$y")
+    ]
+pd = figure(width = 1200, height = 700, tooltips = TOOLTIPSd)
+pd.add_layout(Legend(), 'right')
+pd.title.text = 'New Death/Million over Days in December\nSelect Country in Legend to hide'
+for name, color in zip(europe, my_pallete):
+    country_df = subEurope[subEurope['Countries'] == name]
+    pd.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
+
+pd.legend.click_policy="hide"
+pd.xaxis.axis_label = 'Dates in December'
+pd.yaxis.axis_label = 'New Deaths Per Million'
+tabd = TabPanel(child = pd, title = 'Europe')
+
+## SOUTH AMERICA
+TOOLTIPSe = [
+    ("New Death/Mil", "$y")
+    ]
+pe = figure(width = 1200, height = 700, tooltips = TOOLTIPSe)
+pe.add_layout(Legend(), 'right')
+pe.title.text = 'New Death/Million over Days in December\nSelect Country in Legend to hide'
+for name, color in zip(south_america, my_pallete):
+    country_df = subSA[subSA['Countries'] == name]
+    pe.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
+
+pe.legend.click_policy="hide"
+pe.xaxis.axis_label = 'Dates in December'
+pe.yaxis.axis_label = 'New Deaths Per Million'
+tabe = TabPanel(child = pe, title = 'South America')
+
+## NORTH AMERICA
+TOOLTIPSf = [
+    ("New Death/Mil", "$y")
+    ]
+pf = figure(width = 1200, height = 700, tooltips = TOOLTIPSf)
+pf.add_layout(Legend(), 'right')
+pf.title.text = 'New Death/Million over Days in December\nSelect Country in Legend to hide'
+for name, color in zip(north_america, my_pallete):
+    country_df = subNA[subNA['Countries'] == name]
+    pf.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
+
+pf.legend.click_policy="hide"
+pf.xaxis.axis_label = 'Dates in December'
+pf.yaxis.axis_label = 'New Deaths Per Million'
+tabf = TabPanel(child = pf, title = 'North America')
+
+tabs_Con = Tabs(tabs = [ taba, tabb, tabc, tabd, tabe, tabf ])
+
+show(column(tabs,tabs_Con))
