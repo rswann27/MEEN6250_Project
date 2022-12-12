@@ -10,6 +10,7 @@ import json
 # Import dictionary of country groups
 from Country_Groups import countryGroups
 
+
 # Country Groups for visualization from scraped keys and Country_Groups.py dictionary
 africa = countryGroups.get("Africa")
 asia = countryGroups.get("Asia")
@@ -103,12 +104,12 @@ for rr in range(len(Days)):
     idx_SA = day.query("Countries == @south_america")
     groupDeaths.append(idx_SA['Deaths'].sum())
     #   European Union
-    countryGroup.append('European Union')
+    countryGroup.append('EU')
     groupDay.append(Days[rr])
     idx_EU = day.query("Countries == @european_union")
     groupDeaths.append(idx_EU['Deaths'].sum())
     #   Nato
-    countryGroup.append('Nato')
+    countryGroup.append('NATO')
     groupDay.append(Days[rr])
     idx_Nato = day.query("Countries == @nato")
     groupDeaths.append(idx_Nato['Deaths'].sum())
@@ -132,9 +133,12 @@ groupData = {   'Country Groups'  : countryGroup,
                 'Deaths'            : groupDeaths}
 df = df = pd.DataFrame(groupData)
 
-p = figure(width = 1200, height = 700)
+TOOLTIPS = [
+    ("Death/Mil", "$y")
+    ]
+p = figure(width = 1200, height = 700, tooltips = TOOLTIPS)
 p.add_layout(Legend(), 'right')
-p.title.text = 'Deaths/Million in Country Groups over Days in December\nSelect Country Group in Legend to hide'
+p.title.text = 'Death/Million in Country Groups over Days in December\nSelect Country Group in Legend to hide'
 for name, color in zip(countryGroup, my_pallete):
     country_df = df[df['Country Groups'] == name]
     p.line(x = country_df['Day'], y = country_df['Deaths'], color = color, legend_label=name)
