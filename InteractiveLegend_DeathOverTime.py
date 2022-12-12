@@ -1,3 +1,4 @@
+from math import pi
 import pandas as pd
 import numpy as np
 import random
@@ -6,7 +7,8 @@ from bokeh.models import Legend
 from bokeh.plotting import figure, show
 from bokeh.models import TabPanel, Tabs
 from bokeh.layouts import column, row
-
+from bokeh.transform import cumsum
+from bokeh.models import ColumnDataSource
 import json
 
 # Import dictionary of country groups
@@ -19,6 +21,7 @@ oceania = countryGroups.get("Oceania")
 europe = countryGroups.get("Europe")
 south_america = countryGroups.get("South America")
 north_america = countryGroups.get("North America")
+g20 = countryGroups.get("G20")
 
 # Randomize color palette so similar colors won't be assigned near each other
 my_pallete = list(Turbo256)
@@ -281,17 +284,17 @@ tabc = TabPanel(child = pc, title = 'Oceania')
 TOOLTIPSd = [
     ("New Death/Mil", "$y")
     ]
-pd = figure(width = 1200, height = 700, tooltips = TOOLTIPSd)
-pd.add_layout(Legend(), 'right')
-pd.title.text = 'New Death/Million over Days in December\nSelect Country in Legend to hide'
+pg = figure(width = 1200, height = 700, tooltips = TOOLTIPSd)
+pg.add_layout(Legend(), 'right')
+pg.title.text = 'New Death/Million over Days in December\nSelect Country in Legend to hide'
 for name, color in zip(europe, my_pallete):
     country_df = subEurope[subEurope['Countries'] == name]
-    pd.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
+    pg.line(x = country_df['Day'], y = country_df['NewDeathsPerMil'], color = color, legend_label=name)
 
-pd.legend.click_policy="hide"
-pd.xaxis.axis_label = 'Dates in December'
-pd.yaxis.axis_label = 'New Deaths Per Million'
-tabd = TabPanel(child = pd, title = 'Europe')
+pg.legend.click_policy="hide"
+pg.xaxis.axis_label = 'Dates in December'
+pg.yaxis.axis_label = 'New Deaths Per Million'
+tabd = TabPanel(child = pg, title = 'Europe')
 
 ## SOUTH AMERICA
 TOOLTIPSe = [
@@ -327,4 +330,70 @@ tabf = TabPanel(child = pf, title = 'North America')
 
 tabs_Con = Tabs(tabs = [ taba, tabb, tabc, tabd, tabe, tabf ])
 
-show(column(tabs,tabs_Con))
+
+
+deathData = ['New Deaths', 'Total Deaths']
+
+# Initialize
+newDeaths = []
+totalDeaths = []
+
+for rr in range(len(g20)):
+    newDeaths.append(COVID5.get(g20[rr],{}).get('New Deaths'))
+    totalDeaths.append(COVID5.get(g20[rr],{}).get('Deaths'))
+
+G20data = {'Countries'      : g20,
+        'New Deaths'        : newDeaths,
+        'Total Deaths'      : totalDeaths}  
+
+sum_new_deaths = sum(newDeaths)
+sum_total_deaths = sum(totalDeaths)
+
+angle = []
+angle2 = []
+
+# Creates percentages for visualization in pie chart
+for rr in range(len(g20)):
+    angle.append(newDeaths[rr]/sum_new_deaths)
+    angle2.append(totalDeaths[rr]/sum_total_deaths)
+
+# Creates new dictionary with country and new deaths
+new_key = {}
+for key in g20:
+    for value1 in newDeaths:
+        new_key[key] = value1
+        newDeaths.remove(value1)
+        break
+
+# Rename variables and append dictionary to include total deaths, pie chart angles, and color assignment to each country
+data = pd.Series(new_key).reset_index(name='value').rename(columns={'index': 'country'})
+data['value2'] = totalDeaths
+data['angle'] = data['value']/data['value'].sum() * 2*pi
+data['angle2'] = data['value2']/data['value2'].sum() * 2*pi
+data['color'] = my_pallete[0:len(new_key)]
+
+# New Deaths Chart
+p = figure(height=350, title="New Deaths", toolbar_location=None,
+           tools="hover", tooltips="@country: @value", x_range=(-0.5, 1.0))
+
+p.wedge(x=0, y=1, radius=0.4,
+        start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
+        line_color="white", fill_color='color', legend_field='country', source=data)
+p.axis.axis_label = None
+p.axis.visible = False
+p.grid.grid_line_color = None
+
+# Total Deaths Chart
+q = figure(height=350, title="Total Deaths", toolbar_location=None,
+           tools="hover", tooltips="@country: @value2", x_range=(-0.5, 1.0))
+
+q.wedge(x=0, y=1, radius=0.4,
+        start_angle=cumsum('angle2', include_zero=True), end_angle=cumsum('angle2'),
+        line_color="white", fill_color='color', legend_field='country', source=data)
+
+q.axis.axis_label = None
+q.axis.visible = False
+q.grid.grid_line_color = None
+
+# Display Together
+show(column(row(p,q),tabs,tabs_Con))
